@@ -87,18 +87,24 @@ public class PBCReconnect {
 
 		@Override
 		protected void runOneIteration() throws Exception {
+			boolean showMessage = true;
 			if (!testInet("https://www.google.com/")) {
 				System.out.println("Disconnected, reconnecting.");
 
 				try {
 					post();
+					showMessage = true;
 				}
 				catch (Throwable t) {
 					t.printStackTrace();
 				}
 			}
 			else {
-				System.out.println("Still connected");
+				if (showMessage)
+				{
+					System.out.println("Still connected");
+					showMessage = false;
+				}
 			}
 		}
 
