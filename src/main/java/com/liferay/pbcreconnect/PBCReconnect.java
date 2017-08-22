@@ -1,82 +1,93 @@
+/**
+ * Copyright 2000-present Liferay, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.liferay.pbcreconnect;
 
+import com.gargoylesoftware.htmlunit.HttpMethod;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.WebRequest;
+import com.google.common.util.concurrent.AbstractScheduledService;
+
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URLConnection;
 import java.util.concurrent.TimeUnit;
 
-import com.gargoylesoftware.htmlunit.HttpMethod;
-import com.gargoylesoftware.htmlunit.Page;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.javascript.host.URL;
-import com.google.common.util.concurrent.AbstractExecutionThreadService;
-import com.google.common.util.concurrent.AbstractScheduledService;
-
+/**
+ * @author Christopher Bryan Boyd
+ */
 public class PBCReconnect {
-	static class Checker extends AbstractScheduledService
-	{
-		private final String site;
-		public Checker(String site)
-		{
-			this.site = site;
+
+	static class Checker extends AbstractScheduledService {
+
+		public Checker(String site) {
+			_site = site;
 		}
+
 		@Override
 		protected void runOneIteration() throws Exception {
-			if (!testInet(site))
-			{
+			if (!testInet(_site)) {
 				System.out.println("Disconnected, reconnecting.");
-				try
-				{
-				post();
+
+				try {
+					post();
 				}
-				catch (Exception e)
-				{
+				catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			else
-			{
+			else {
 				System.out.println("Still connected");
 			}
 		}
+
 		@Override
 		protected Scheduler scheduler() {
 			return Scheduler.newFixedDelaySchedule(5, 5, TimeUnit.SECONDS);
 		}
 		
+		private final String _site;
 	}
+
 	public static void main(String[] args) {
 		Checker checker = new Checker("google.com");
 		checker.startAsync();
+
 		try {
 			System.in.read();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public static boolean testInet(String site) {
-
         java.net.URL url;
+
 		try {
 			url = new java.net.URL("https://www.google.com");
 			URLConnection connection = url.openConnection();
 			connection.connect();   
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			return false;
 		}
- 
- 
      
         return true;
-
 	}
-	public static void post() throws Exception
-	{
+
+	public static void post() throws Exception {
 		final WebClient webClient = new WebClient();
 
 	    WebRequest requestSettings = new WebRequest(new java.net.URL("https://1.1.1.1/login.html"), HttpMethod.POST);
@@ -99,9 +110,8 @@ public class PBCReconnect {
 
 	    requestSettings.setRequestBody("buttonClicked=4&err_flag=0&err_msg=&info_flag=0&info_msg=&redirect_url=&network_name=Guest+Network");
 	    webClient.getOptions().setUseInsecureSSL(true);
-	    Page redirectPage = webClient.getPage(requestSettings);
+	    webClient.getPage(requestSettings);
 	    webClient.close();
 	}
-
 
 }
