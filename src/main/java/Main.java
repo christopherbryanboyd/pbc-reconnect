@@ -26,7 +26,14 @@ public class Main {
 			if (!testInet(site))
 			{
 				System.out.println("Disconnected, reconnecting.");
+				try
+				{
 				post();
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 			else
 			{
@@ -70,7 +77,7 @@ public class Main {
 	{
 		final WebClient webClient = new WebClient();
 
-	    WebRequest requestSettings = new WebRequest(new java.net.URL("1.1.1.1/login.html"), HttpMethod.POST);
+	    WebRequest requestSettings = new WebRequest(new java.net.URL("https://1.1.1.1/login.html"), HttpMethod.POST);
 
 	    requestSettings.setAdditionalHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 	    requestSettings.setAdditionalHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -89,7 +96,7 @@ public class Main {
 	    requestSettings.setAdditionalHeader("Origin", "http://1.1.1.1/login.html");
 
 	    requestSettings.setRequestBody("buttonClicked=4&err_flag=0&err_msg=&info_flag=0&info_msg=&redirect_url=&network_name=Guest+Network");
-
+	    webClient.getOptions().setUseInsecureSSL(true);
 	    Page redirectPage = webClient.getPage(requestSettings);
 	    webClient.close();
 	}
