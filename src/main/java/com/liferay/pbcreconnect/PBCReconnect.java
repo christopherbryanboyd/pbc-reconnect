@@ -22,8 +22,6 @@ import com.gargoylesoftware.htmlunit.WebRequest;
 
 import com.google.common.util.concurrent.AbstractScheduledService;
 
-import java.io.IOException;
-
 import java.net.URLConnection;
 
 import java.util.concurrent.TimeUnit;
@@ -34,16 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class PBCReconnect {
 
 	public static void main(String[] args) {
-		Checker checker = new Checker("google.com");
-
-		checker.startAsync();
-
-		try {
-			System.in.read();
-		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
+		new Checker().startAsync();
 	}
 
 	public static void post() throws Exception {
@@ -79,13 +68,15 @@ public class PBCReconnect {
 
 	public static boolean testInet(String site) {
 		try {
-			java.net.URL url = new java.net.URL("https://www.google.com");
+			java.net.URL url = new java.net.URL(site);
 
 			URLConnection connection = url.openConnection();
 
 			connection.connect();
 		}
-		catch (Exception e) {
+		catch (Throwable t) {
+			t.printStackTrace();
+
 			return false;
 		}
 
@@ -94,20 +85,16 @@ public class PBCReconnect {
 
 	private static class Checker extends AbstractScheduledService {
 
-		public Checker(String site) {
-			_site = site;
-		}
-
 		@Override
 		protected void runOneIteration() throws Exception {
-			if (!testInet(_site)) {
+			if (!testInet("https://www.google.com/")) {
 				System.out.println("Disconnected, reconnecting.");
 
 				try {
 					post();
 				}
-				catch (Exception e) {
-					e.printStackTrace();
+				catch (Throwable t) {
+					t.printStackTrace();
 				}
 			}
 			else {
@@ -117,10 +104,8 @@ public class PBCReconnect {
 
 		@Override
 		protected Scheduler scheduler() {
-			return Scheduler.newFixedDelaySchedule(5, 5, TimeUnit.SECONDS);
+			return Scheduler.newFixedDelaySchedule(1, 5, TimeUnit.SECONDS);
 		}
-
-		private final String _site;
 
 	}
 
