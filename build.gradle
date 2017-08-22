@@ -20,6 +20,10 @@ dependencies {
 	compile group: "net.sourceforge.htmlunit", name: "htmlunit", version: "2.27"
 }
 
+formatSource {
+	maxLineLength 120
+}
+
 repositories {
 	maven {
 		url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
