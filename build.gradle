@@ -11,15 +11,14 @@ buildscript {
 	}
 }
 
-
 apply plugin: 'java'
 apply plugin: 'biz.aQute.bnd.builder'
 apply plugin: 'com.liferay.source.formatter'
 
 dependencies {
-    compile 'com.google.guava:guava:21.0'
-	compile group: 'net.sourceforge.htmlunit', name: 'htmlunit', version: '2.27'
-} 
+	compile group: "com.google.guava", name: "guava", version: "21.0"
+	compile group: "net.sourceforge.htmlunit", name: "htmlunit", version: "2.27"
+}
 
 repositories {
 	maven {
