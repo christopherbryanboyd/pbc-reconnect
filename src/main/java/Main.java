@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URLConnection;
 import java.util.concurrent.TimeUnit;
 
 import com.gargoylesoftware.htmlunit.HttpMethod;
@@ -49,17 +51,20 @@ public class Main {
 	}
 
 	public static boolean testInet(String site) {
-	    Socket sock = new Socket();
-	    InetSocketAddress addr = new InetSocketAddress(site,80);
-	    try {
-	        sock.connect(addr,3000);
-	        return true;
-	    } catch (IOException e) {
-	        return false;
-	    } finally {
-	        try {sock.close();}
-	        catch (IOException e) {}
-	    }
+
+        java.net.URL url;
+		try {
+			url = new java.net.URL("https://www.google.com");
+			URLConnection connection = url.openConnection();
+			connection.connect();   
+		} catch (Exception e) {
+			return false;
+		}
+ 
+ 
+     
+        return true;
+
 	}
 	public static void post() throws Exception
 	{
@@ -67,18 +72,23 @@ public class Main {
 
 	    WebRequest requestSettings = new WebRequest(new java.net.URL("1.1.1.1/login.html"), HttpMethod.POST);
 
-	    requestSettings.setAdditionalHeader("Accept", "*/*");
-	    requestSettings.setAdditionalHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-	    requestSettings.setAdditionalHeader("Referer", "REFURLHERE");
-	    requestSettings.setAdditionalHeader("Accept-Language", "en-US,en;q=0.8");
-	    requestSettings.setAdditionalHeader("Accept-Encoding", "gzip,deflate,sdch");
+	    requestSettings.setAdditionalHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+	    requestSettings.setAdditionalHeader("Content-Type", "application/x-www-form-urlencoded");
+	    requestSettings.setAdditionalHeader("Referer", "http://1.1.1.1/login.html");
+	    requestSettings.setAdditionalHeader("Accept-Language", "en-US");
+	    requestSettings.setAdditionalHeader("Accept-Encoding", "gzip,deflate");
+	    requestSettings.setAdditionalHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8");
 	    requestSettings.setAdditionalHeader("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.3");
 	    requestSettings.setAdditionalHeader("X-Requested-With", "XMLHttpRequest");
 	    requestSettings.setAdditionalHeader("Cache-Control", "no-cache");
 	    requestSettings.setAdditionalHeader("Pragma", "no-cache");
+	    requestSettings.setAdditionalHeader("Host", "1.1.1.1");
+	    requestSettings.setAdditionalHeader("Connection", "keep-alive");
+	    requestSettings.setAdditionalHeader("Upgrade-Insecure-Requests", "1");
+	    requestSettings.setAdditionalHeader("Cookie", "GUEST_LANGUAGE_ID=en_US; COOKIE_SUPPORT=true");
 	    requestSettings.setAdditionalHeader("Origin", "http://1.1.1.1/login.html");
 
-	    requestSettings.setRequestBody("REQUESTBODY");
+	    requestSettings.setRequestBody("buttonClicked=4&err_flag=0&err_msg=&info_flag=0&info_msg=&redirect_url=&network_name=Guest+Network");
 
 	    Page redirectPage = webClient.getPage(requestSettings);
 	    webClient.close();
