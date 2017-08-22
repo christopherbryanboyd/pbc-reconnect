@@ -2,3 +2,5 @@ JPM-Command: pbcrecon
 Main-Class: com.liferay.pbcreconnect.PBCReconnect
 
 -conditionalpackage: *
+
+-privatepackage: net.sourceforge.htmlunit.corejs.javascript.*
