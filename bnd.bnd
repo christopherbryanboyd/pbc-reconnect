@@ -1,0 +1,4 @@
+JPM-Command: pbcrecon
+Main-Class: com.liferay.pbcreconnect.PBCReconnect
+
+-conditionalpackage: *
