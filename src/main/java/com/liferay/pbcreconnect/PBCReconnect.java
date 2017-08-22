@@ -85,9 +85,9 @@ public class PBCReconnect {
 
 	private static class Checker extends AbstractScheduledService {
 
+		private boolean showMessage = true;
 		@Override
 		protected void runOneIteration() throws Exception {
-			boolean showMessage = true;
 			if (!testInet("https://www.google.com/")) {
 				System.out.println("Disconnected, reconnecting.");
 
