@@ -1,3 +1,5 @@
+package com.liferay.pbcreconnect;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -13,7 +15,7 @@ import com.gargoylesoftware.htmlunit.javascript.host.URL;
 import com.google.common.util.concurrent.AbstractExecutionThreadService;
 import com.google.common.util.concurrent.AbstractScheduledService;
 
-public class Main {
+public class PBCReconnect {
 	static class Checker extends AbstractScheduledService
 	{
 		private final String site;
