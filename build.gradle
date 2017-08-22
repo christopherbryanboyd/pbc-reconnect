@@ -1,6 +1,7 @@
 buildscript {
 	dependencies {
 		classpath group: "biz.aQute.bnd", name: "biz.aQute.bnd.gradle", version: "3.4.0"
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.source.formatter", version: "latest.release"
 	}
 
 	repositories {
@@ -13,6 +14,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'biz.aQute.bnd.builder'
+apply plugin: 'com.liferay.source.formatter'
 
 dependencies {
     compile 'com.google.guava:guava:21.0'
