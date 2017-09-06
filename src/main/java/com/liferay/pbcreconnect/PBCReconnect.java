@@ -71,7 +71,7 @@ public class PBCReconnect {
 			java.net.URL url = new java.net.URL(site);
 
 			URLConnection connection = url.openConnection();
-
+			connection.setReadTimeout(5000);
 			connection.connect();
 		}
 		catch (Throwable t) {
